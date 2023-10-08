@@ -14,7 +14,7 @@ def init():
 #função de atualização da animação
 def update(t):
     if t % 50 == 0:
-        filename = f"Propagacao_onda_acustica/samples/sample_t{t}.bin"
+        filename = f"samples/sample_t{t}.bin"
 
         data = np.fromfile(filename, dtype=np.float32)
 
