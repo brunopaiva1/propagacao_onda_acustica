@@ -9,8 +9,7 @@ void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
     float t;
     float pi = 3.14;
 
-    for (int i = 0; i < nt; i++)
-    {
+    for (int i = 0; i < nt; i++){
         t = i * dt;
         s[i] = (1 - 2 * pi * pi * f * f * t * t) * exp(-pi * pi * f * f * t * t);
     }
@@ -94,7 +93,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     free(uAnterior);
     free(uProximo);
     
-}
 
 int main(int argc, char* argv[]) {
     // Parâmetros de entrada
