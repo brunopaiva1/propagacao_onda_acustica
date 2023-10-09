@@ -33,8 +33,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     memset(uProximo, 0, nx * ny * nz * sizeof(float));
 
     for (int t = 0; t < nt; t++)
-        for (int idx = 0; idx < (nx - 4) * (ny - 4) * (nz - 4); idx++)
-        {
+        for (int idx = 0; idx < (nx - 4) * (ny - 4) * (nz - 4); idx++) {
             int x = 2 + idx / ((ny - 4) * (nz - 4));
             int y = 2 + (idx / (nz - 4)) % (ny - 4);
             int z = 2 + idx % (nz - 4);
