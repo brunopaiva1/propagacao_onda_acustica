@@ -24,7 +24,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     float *uAnterior = malloc(nx * ny * nz * sizeof(float));
     float *uProximo = malloc(nx * ny * nz * sizeof(float));
     float *u = malloc(nx * ny * nz * sizeof(float));
-    double start, finish;
 
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
@@ -95,7 +94,7 @@ int main(int argc, char* argv[]) {
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
     int nt = 10000;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
-    int c = 1500.0; //Velocidade de propagação da onda no meio
+    float c = 1500.0; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
 
     thread_count = strtol(argv[1], NULL, 10);
