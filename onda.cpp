@@ -34,9 +34,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     memset(uProximo, 0, nx * ny * nz * sizeof(float));
 
     for (int t = 0; t < nt; t++)
-    {
-#       pragma omp parallel for num_threads(thread_count)\
-        default(none) shared(nx, ny, nz, nt, dx, dy, dz, dt, u, uAnterior, uProximo, c, xs, ys, zs, s) private(dEx, dEy, dEz)
         for (int idx = 0; idx < (nx - 4) * (ny - 4) * (nz - 4); idx++)
         {
             int x = 2 + idx / ((ny - 4) * (nz - 4));
