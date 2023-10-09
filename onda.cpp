@@ -26,13 +26,11 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     float *u = malloc(nx * ny * nz * sizeof(float));
     double start, finish;
 
-    start = omp_get_wtime();
-
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
     memset(uProximo, 0, nx * ny * nz * sizeof(float));
 
-    for (int t = 0; t < nt; t++)
+    for (int t = 0; t < nt; t++) {
         for (int idx = 0; idx < (nx - 4) * (ny - 4) * (nz - 4); idx++) {
             int x = 2 + idx / ((ny - 4) * (nz - 4));
             int y = 2 + (idx / (nz - 4)) % (ny - 4);
@@ -84,14 +82,10 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         
 
     }
-
-    finish = omp_get_wtime();
-
-    printf("Tempo: %lf \n", finish - start);
     
     free(uAnterior);
     free(uProximo);
-    
+                    }
 
 int main(int argc, char* argv[]) {
     // Parâmetros de entrada
@@ -101,7 +95,7 @@ int main(int argc, char* argv[]) {
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
     int nt = 10000;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
-    int c = 1500; //Velocidade de propagação da onda no meio
+    int c = 1500.0; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
 
     thread_count = strtol(argv[1], NULL, 10);
