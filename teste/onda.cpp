@@ -3,8 +3,6 @@
 #include <math.h>
 #include <string.h>
 
-
-// Função para inicializar a fonte s
 void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
     float t;
     float pi = 3.14;
@@ -16,7 +14,6 @@ void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
     
 }
 
-// Função para propagar a onda acústica usando diferenças finitas
 void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs, int thread_count) {
     
@@ -87,27 +84,22 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
                     }
 
 int main(int argc, char* argv[]) {
-    // Parâmetros de entrada
-    int xs = 15, ys = 15, zs = 15;  // Posição da fonte
-    float dx = 10, dy = 10, dz = 10;  // Resolução espacial
-    float dt = 0.001;         // Passo de tempo
-    int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 10000;           // Número de passos de tempo
-    float f = 10;  // Frequência de pico da fonte
-    float c = 1500.0; //Velocidade de propagação da onda no meio
-    int thread_count; //Número de threads
+    int xs = 15, ys = 15, zs = 15;
+    float dx = 10, dy = 10, dz = 10;
+    float dt = 0.001;
+    int nx = 50, ny = 50, nz = 50;
+    int nt = 10000;
+    float f = 10;
+    float c = 1500.0;
+    int thread_count;
 
     thread_count = strtol(argv[1], NULL, 10);
 
     float *s = (float *)malloc(nt * sizeof(float));
 
-    // Inicialize a fonte s
     initializeSource(s, f, dt, nt, thread_count);
-
-    // Propague a onda acústica
     propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs, thread_count);
 
-    // Libere a memória alocada
     free(s);
 
     return 0;
