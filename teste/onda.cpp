@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 void initializeSource(float *s, float f, float dt, int nt) {
     float t;
@@ -70,6 +71,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 }
 
 int main() {
+    clock_t start_t, end_t;
     int xs = 15, ys = 15, zs = 15;
     float dx = 10, dy = 10, dz = 10;
     float dt = 0.001;
@@ -79,10 +81,10 @@ int main() {
     float c = 1500.0;
 
     float *s = (float *)malloc(nt * sizeof(float));
-
+    start_t = clock();
     initializeSource(s, f, dt, nt);
     propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
-
+    end_t = clock();
     free(s);
 
     return 0;
