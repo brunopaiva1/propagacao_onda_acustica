@@ -67,7 +67,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     free(uProximo);
                     }
 
-int main(int argc, char* argv[]) {
+int main() {
     int xs = 15, ys = 15, zs = 15;
     float dx = 10, dy = 10, dz = 10;
     float dt = 0.001;
@@ -75,7 +75,6 @@ int main(int argc, char* argv[]) {
     int nt = 10000;
     float f = 10;
     float c = 1500.0;
-    int;
 
     float *s = (float *)malloc(nt * sizeof(float));
 
