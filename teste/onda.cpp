@@ -50,7 +50,8 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
                     (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z + 1)] -
                     (1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
 
-            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
+            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - 
+                    uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
                     
         }
 
