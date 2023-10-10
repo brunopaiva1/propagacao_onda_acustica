@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 
-void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
+void initializeSource(float *s, float f, float dt, int nt) {
     float t;
     float pi = 3.14;
 
@@ -15,7 +15,7 @@ void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
 }
 
 void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
-                    int nx, int ny, int nz, int nt, int xs, int ys, int zs, int thread_count) {
+                    int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
     
     float dEx, dEy, dEz;
     float *uAnterior = (float*) malloc(nx * ny * nz * sizeof(float));
@@ -91,14 +91,12 @@ int main(int argc, char* argv[]) {
     int nt = 10000;
     float f = 10;
     float c = 1500.0;
-    int thread_count;
-
-    thread_count = strtol(argv[1], NULL, 10);
+    int;
 
     float *s = (float *)malloc(nt * sizeof(float));
 
-    initializeSource(s, f, dt, nt, thread_count);
-    propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs, thread_count);
+    initializeSource(s, f, dt, nt);
+    propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
 
     free(s);
 
