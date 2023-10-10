@@ -65,7 +65,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     
     free(uAnterior);
     free(uProximo);
-                    }
+}
 
 int main() {
     int xs = 15, ys = 15, zs = 15;
