@@ -21,9 +21,9 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs, int thread_count) {
     
     float dEx, dEy, dEz;
-    float *uAnterior = malloc(nx * ny * nz * sizeof(float));
-    float *uProximo = malloc(nx * ny * nz * sizeof(float));
-    float *u = malloc(nx * ny * nz * sizeof(float));
+    float *uAnterior = (float*) malloc(nx * ny * nz * sizeof(float));
+    float *uProximo = (float*) malloc(nx * ny * nz * sizeof(float));
+    float *u = (float*) malloc(nx * ny * nz * sizeof(float));
 
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
@@ -65,19 +65,19 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         uProximo = uAnterior;
         uAnterior = temp;
 
-        if (t % 50 == 0)
-        {
-            char filename[50];
-            sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
-            FILE *file = fopen(filename, "wb");
-            if (file != NULL) {
-                // Escreva os dados de uProximo no arquivo binário
-                fwrite(uProximo, sizeof(float), nx * ny * nz, file);
-                fclose(file);
-            } else {
-                printf("Erro ao abrir o arquivo para escrita.\n");
-            }
-        }
+        // if (t % 50 == 0)
+        // {
+        //     char filename[50];
+        //     sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
+        //     FILE *file = fopen(filename, "wb");
+        //     if (file != NULL) {
+        //         // Escreva os dados de uProximo no arquivo binário
+        //         fwrite(uProximo, sizeof(float), nx * ny * nz, file);
+        //         fclose(file);
+        //     } else {
+        //         printf("Erro ao abrir o arquivo para escrita.\n");
+        //     }
+        // }
         
 
     }
