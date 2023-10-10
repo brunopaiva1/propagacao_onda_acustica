@@ -60,23 +60,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         float *temp = u;
         u = uProximo;
         uProximo = uAnterior;
-        uAnterior = temp;
-
-        // if (t % 50 == 0)
-        // {
-        //     char filename[50];
-        //     sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
-        //     FILE *file = fopen(filename, "wb");
-        //     if (file != NULL) {
-        //         // Escreva os dados de uProximo no arquivo binário
-        //         fwrite(uProximo, sizeof(float), nx * ny * nz, file);
-        //         fclose(file);
-        //     } else {
-        //         printf("Erro ao abrir o arquivo para escrita.\n");
-        //     }
-        // }
-        
-
+        uAnterior = temp; 
     }
     
     free(uAnterior);
