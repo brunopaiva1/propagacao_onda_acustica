@@ -13,6 +13,6 @@ cd /scratch/pex1272-ufersa/bruno.silva4/teste
 
 module load gcc/9.3
 
-gcc -g -o onda onda.cpp
+g++ -g -o onda.exe onda.cpp
 
-./onda 4
+./onda.exe

@@ -1,8 +1,10 @@
-#include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
+
+using namespace std;
 
 void initializeSource(float *s, float f, float dt, int nt) {
     float t;
@@ -72,20 +74,25 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 
 int main() {
     clock_t start_t, end_t;
+    double total_t;
     int xs = 15, ys = 15, zs = 15;
     float dx = 10, dy = 10, dz = 10;
     float dt = 0.001;
-    int nx = 50, ny = 50, nz = 50;
+    int nx = 20, ny = 20, nz = 20;
     int nt = 10000;
     float f = 10;
     float c = 1500.0;
 
     float *s = (float *)malloc(nt * sizeof(float));
+
     start_t = clock();
     initializeSource(s, f, dt, nt);
     propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
     end_t = clock();
+
     free(s);
 
+    total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+    cout << "O tempo de execução é: " << total_t << endl;
     return 0;
 }
