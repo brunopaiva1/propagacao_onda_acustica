@@ -58,7 +58,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
                     
         }
 
-
         uProximo[xs * ny * nz + ys * nz + zs] -= c * c * dt * dt * s[t];
 
         float *temp = u;
