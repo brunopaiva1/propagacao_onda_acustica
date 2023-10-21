@@ -3,12 +3,17 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <vector>
+#include <chrono>
 
-using namespace std;
+const double M_PI = 3.14159265358979323846;
+const double PI_SQUARE = M_PI * M_PI;
+const double PI_SQUARE_FOUR = 4.0 * PI_SQUARE;
+const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
+const double PI_SQUARE_TWELVE = 12.0 * PI_SQUARE;
 
-void initializeSource(float *s, float f, float dt, int nt) {
-    float t;
-    float pi = M_PI;
+
+void initializeSource(std::vector<floa>& s, float f, float dt, int nt) {
 
     for (int i = 0; i < nt; i++){
         t = i * dt;
@@ -92,6 +97,6 @@ int main() {
     free(s);
 
     total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-    cout << "O tempo de execução é: " << total_t << endl;
+    std::cout << "O tempo de execução é: " << total_t << std::endl;
     return 0;
 }
