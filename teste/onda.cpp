@@ -47,7 +47,7 @@ float calculateDEz(const std::vector<float>& previousWavefield, int x, int y, in
 void wavePropagation(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
     std::vector<float> previousWavefield(nx * ny * nz, 0.0);
-    std::vector<float> uProximo(nx * ny * nz, 0.0);
+    std::vector<float> nextWavefield(nx * ny * nz, 0.0);
     std::vector<float> u(nx * ny * nz, 0.0);
 
     for (int t = 0; t < nt; t++) {
@@ -61,14 +61,14 @@ void wavePropagation(std::vector<float>& s, float c, float dx, float dy, float d
             float dEz = calculateDEz(previousWavefield, x, y, z, ny, nz, dz);
 
 
-            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - previousWavefield[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
+            nextWavefield[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - previousWavefield[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
         }
 
-        uProximo[xs * ny * nz + ys * nz + zs] -= c * c * dt * dt * s[t];
+        nextWavefield[xs * ny * nz + ys * nz + zs] -= c * c * dt * dt * s[t];
 
         std::vector<float> temp = u;
-        u = uProximo;
-        uProximo = previousWavefield;
+        u = nextWavefield;
+        nextWavefield = previousWavefield;
         previousWavefield = temp;
     }
     
