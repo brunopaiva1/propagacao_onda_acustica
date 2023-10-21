@@ -8,7 +8,7 @@ using namespace std;
 
 void initializeSource(float *s, float f, float dt, int nt) {
     float t;
-    float pi = 3.14;
+    float pi = M_PI;
 
     for (int i = 0; i < nt; i++){
         t = i * dt;
