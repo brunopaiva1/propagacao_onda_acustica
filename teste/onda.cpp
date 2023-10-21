@@ -60,7 +60,8 @@ void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz,
             int z = 2 + idx % (nz - 4);
 
             float dEx = calculateDEx(uAnterior, x, y, z, ny, nz, dx);
-            // Calculo de dEy e dEz
+            float dEy = calculateDEx(uAnterior, x, y, z, ny, nz, dy);
+            float dEz = calculateDEx(uAnterior, x, y, z, ny, nz, dz);
 
             uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
         }
