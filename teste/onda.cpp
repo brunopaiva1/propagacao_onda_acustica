@@ -11,7 +11,6 @@ const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
 const double PI_SQUARE_TWELVE = 12.0 * PI_SQUARE;
 
 void generateSource(std::vector<float>& s, float f, float dt, int nt) {
-
     for (int i = 0; i < nt; i++) {
         float t = i * dt;
         s[i] = (1 - PI_SQUARE * f * f * t * t) * exp(-PI_SQUARE * f * f * t * t);
