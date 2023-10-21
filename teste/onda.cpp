@@ -31,6 +31,22 @@ float calculateDEx(const std::vector<float>& uAnterior, int x, int y, int z, int
             
 }
 
+float calculateDEy(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dy) {
+            return ((-1.0/12.0)*uAnterior[x * ny * nz + (y - 2) * nz + z] +
+                    (4.0/3.0)*uAnterior[x * ny * nz + (y - 1) * nz + z] -
+                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*uAnterior[x * ny * nz + (y + 1) * nz + z] -
+                    (1.0/12.0)*uAnterior[x * ny * nz + (y + 2) * nz + z]) / (dy * dy);
+}
+
+float calculateDEz(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dz) {
+             return ((-1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z - 2)] +
+                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z - 1)] -
+                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z + 1)] -
+                    (1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
+
+}
 void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
     std::vector<float> uAnterior(nx * ny * nz, 0.0);
