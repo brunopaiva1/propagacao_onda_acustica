@@ -19,34 +19,34 @@ void generateSource(std::vector<float>& s, float f, float dt, int nt) {
     
 }
 
-float calculateDEx(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dx) {
-             return ((-1.0/12.0)*uAnterior[(x - 2) * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[(x - 1) * ny * nz + y * nz + z] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[(x + 1) * ny * nz + y * nz + z] -
-                    (1.0/12.0)*uAnterior[(x + 2) * ny * nz + y * nz + z]) / (dx * dx);
+float calculateDEx(const std::vector<float>& previousWavefield, int x, int y, int z, int ny, int nz, float dx) {
+             return ((-1.0/12.0)*previousWavefield[(x - 2) * ny * nz + y * nz + z] +
+                    (4.0/3.0)*previousWavefield[(x - 1) * ny * nz + y * nz + z] -
+                    (5.0/2.0)*previousWavefield[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*previousWavefield[(x + 1) * ny * nz + y * nz + z] -
+                    (1.0/12.0)*previousWavefield[(x + 2) * ny * nz + y * nz + z]) / (dx * dx);
             
 }
 
-float calculateDEy(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dy) {
-            return ((-1.0/12.0)*uAnterior[x * ny * nz + (y - 2) * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + (y - 1) * nz + z] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + (y + 1) * nz + z] -
-                    (1.0/12.0)*uAnterior[x * ny * nz + (y + 2) * nz + z]) / (dy * dy);
+float calculateDEy(const std::vector<float>& previousWavefield, int x, int y, int z, int ny, int nz, float dy) {
+            return ((-1.0/12.0)*previousWavefield[x * ny * nz + (y - 2) * nz + z] +
+                    (4.0/3.0)*previousWavefield[x * ny * nz + (y - 1) * nz + z] -
+                    (5.0/2.0)*previousWavefield[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*previousWavefield[x * ny * nz + (y + 1) * nz + z] -
+                    (1.0/12.0)*previousWavefield[x * ny * nz + (y + 2) * nz + z]) / (dy * dy);
 }
 
-float calculateDEz(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dz) {
-             return ((-1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z - 2)] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z - 1)] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z + 1)] -
-                    (1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
+float calculateDEz(const std::vector<float>& previousWavefield, int x, int y, int z, int ny, int nz, float dz) {
+             return ((-1.0/12.0)*previousWavefield[x * ny * nz + y * nz + (z - 2)] +
+                    (4.0/3.0)*previousWavefield[x * ny * nz + y * nz + (z - 1)] -
+                    (5.0/2.0)*previousWavefield[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*previousWavefield[x * ny * nz + y * nz + (z + 1)] -
+                    (1.0/12.0)*previousWavefield[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
 
 }
 void wavePropagation(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
-    std::vector<float> uAnterior(nx * ny * nz, 0.0);
+    std::vector<float> previousWavefield(nx * ny * nz, 0.0);
     std::vector<float> uProximo(nx * ny * nz, 0.0);
     std::vector<float> u(nx * ny * nz, 0.0);
 
@@ -56,20 +56,20 @@ void wavePropagation(std::vector<float>& s, float c, float dx, float dy, float d
             int y = 2 + (idx / (nz - 4)) % (ny - 4);
             int z = 2 + idx % (nz - 4);
 
-            float dEx = calculateDEx(uAnterior, x, y, z, ny, nz, dx);
-            float dEy = calculateDEy(uAnterior, x, y, z, ny, nz, dy);
-            float dEz = calculateDEz(uAnterior, x, y, z, ny, nz, dz);
+            float dEx = calculateDEx(previousWavefield, x, y, z, ny, nz, dx);
+            float dEy = calculateDEy(previousWavefield, x, y, z, ny, nz, dy);
+            float dEz = calculateDEz(previousWavefield, x, y, z, ny, nz, dz);
 
 
-            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
+            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - previousWavefield[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
         }
 
         uProximo[xs * ny * nz + ys * nz + zs] -= c * c * dt * dt * s[t];
 
         std::vector<float> temp = u;
         u = uProximo;
-        uProximo = uAnterior;
-        uAnterior = temp;
+        uProximo = previousWavefield;
+        previousWavefield = temp;
     }
     
 }
