@@ -10,7 +10,7 @@ const double PI_SQUARE_FOUR = 4.0 * PI_SQUARE;
 const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
 const double PI_SQUARE_TWELVE = 12.0 * PI_SQUARE;
 
-void initializeSource(std::vector<float>& s, float f, float dt, int nt) {
+void generateSource(std::vector<float>& s, float f, float dt, int nt) {
 
     for (int i = 0; i < nt; i++) {
         float t = i * dt;
@@ -86,7 +86,7 @@ int main() {
 
     std::vector<float> s(nt);
 
-    initializeSource(s, f, dt, nt);
+    generateSource(s, f, dt, nt);
     propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
 
     auto end_time = std::chrono::high_resolution_clock::now();
