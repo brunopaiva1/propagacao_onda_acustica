@@ -1,12 +1,12 @@
 #include <iostream>
-#include <stdlib.h>
 #include <math.h>
-#include <string.h>
 #include <time.h>
 #include <vector>
 #include <chrono>
+#include <cmath>
+#define M_PI = 3.14159265358979323846;
 
-const double M_PI = 3.14159265358979323846;
+//const double M_PI;
 const double PI_SQUARE = M_PI * M_PI;
 const double PI_SQUARE_FOUR = 4.0 * PI_SQUARE;
 const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
@@ -22,17 +22,20 @@ void initializeSource(std::vector<float>& s, float f, float dt, int nt) {
     
 }
 
-void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
-                    int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
-    
-    float dEx, dEy, dEz;
-    float *uAnterior = (float*) malloc(nx * ny * nz * sizeof(float));
-    float *uProximo = (float*) malloc(nx * ny * nz * sizeof(float));
-    float *u = (float*) malloc(nx * ny * nz * sizeof(float));
+float calculateDEx(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dx) {
+        dEx = ((-1.0/12.0)*uAnterior[(x - 2) * ny * nz + y * nz + z] +
+                    (4.0/3.0)*uAnterior[(x - 1) * ny * nz + y * nz + z] -
+                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
+                    (4.0/3.0)*uAnterior[(x + 1) * ny * nz + y * nz + z] -
+                    (1.0/12.0)*uAnterior[(x + 2) * ny * nz + y * nz + z]) / (dx * dx);
+            
+}
 
-    memset(u, 0, nx * ny * nz * sizeof(float));
-    memset(uAnterior, 0, nx * ny * nz * sizeof(float));
-    memset(uProximo, 0, nx * ny * nz * sizeof(float));
+void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
+                    int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
+    std::vector<float> uAnterior(nx * ny * nz, 0.0);
+    std::vector<float> uProximo(nx * ny * nz, 0.0);
+    std::vector<float> u(nx * ny * nz, 0.0);
 
     for (int t = 0; t < nt; t++) {
         for (int idx = 0; idx < (nx - 4) * (ny - 4) * (nz - 4); idx++) {
@@ -40,35 +43,18 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
             int y = 2 + (idx / (nz - 4)) % (ny - 4);
             int z = 2 + idx % (nz - 4);
 
-            dEx = ((-1.0/12.0)*uAnterior[(x - 2) * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[(x - 1) * ny * nz + y * nz + z] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[(x + 1) * ny * nz + y * nz + z] -
-                    (1.0/12.0)*uAnterior[(x + 2) * ny * nz + y * nz + z]) / (dx * dx);
-            
-            dEy = ((-1.0/12.0)*uAnterior[x * ny * nz + (y - 2) * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + (y - 1) * nz + z] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + (y + 1) * nz + z] -
-                    (1.0/12.0)*uAnterior[x * ny * nz + (y + 2) * nz + z]) / (dy * dy);
+            float dEx = calculateDEx(uAnterior, x, y, z, ny, nz, dx);
+            // Calculo de dEy e dEz
 
-            dEz = ((-1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z - 2)] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z - 1)] -
-                    (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
-                    (4.0/3.0)*uAnterior[x * ny * nz + y * nz + (z + 1)] -
-                    (1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
-
-            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - 
-                    uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
-                    
+            uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
         }
 
         uProximo[xs * ny * nz + ys * nz + zs] -= c * c * dt * dt * s[t];
 
-        float *temp = u;
+        std::vector<float> temp = u;
         u = uProximo;
         uProximo = uAnterior;
-        uAnterior = temp; 
+        uAnterior = temp;
     }
     
     free(uAnterior);
@@ -77,8 +63,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 }
 
 int main() {
-    clock_t start_t, end_t;
-    double total_t;
+    auto start_time = std::chrono::high_resolution_clock::now();
     int xs = 15, ys = 15, zs = 15;
     float dx = 10, dy = 10, dz = 10;
     float dt = 0.001;
@@ -87,18 +72,14 @@ int main() {
     float f = 10;
     float c = 1500.0;
 
-     std::vector<float> s(nt);
+    std::vector<float> s(nt);
 
-    float *s = (float *)malloc(nt * sizeof(float));
-
-    start_t = clock();
     initializeSource(s, f, dt, nt);
     propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
-    end_t = clock();
 
-    free(s);
+    auto end_time = std::chrono::high_resolution_clock::now();
+    double execution_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+    std::cout << "O tempo de execução é: " << execution_time << " ms" << std::endl;
 
-    total_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-    std::cout << "O tempo de execução é: " << total_t << std::endl;
     return 0;
 }
