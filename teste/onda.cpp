@@ -4,7 +4,7 @@
 #include <vector>
 #include <chrono>
 #include <cmath>
-#define M_PI 3.14159265358979323846;
+#define M_PI 3.14159265358979323846
 
 const double PI_SQUARE = M_PI * M_PI;
 const double PI_SQUARE_FOUR = 4.0 * PI_SQUARE;
