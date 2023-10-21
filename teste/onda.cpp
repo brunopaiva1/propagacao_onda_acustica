@@ -44,7 +44,7 @@ float calculateDEz(const std::vector<float>& uAnterior, int x, int y, int z, int
                     (1.0/12.0)*uAnterior[x * ny * nz + y * nz + (z + 2)]) / (dz * dz);
 
 }
-void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
+void wavePropagation(std::vector<float>& s, float c, float dx, float dy, float dz, float dt,
                     int nx, int ny, int nz, int nt, int xs, int ys, int zs) {
     std::vector<float> uAnterior(nx * ny * nz, 0.0);
     std::vector<float> uProximo(nx * ny * nz, 0.0);
@@ -87,7 +87,7 @@ int main() {
     std::vector<float> s(nt);
 
     generateSource(s, f, dt, nt);
-    propagateWave(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
+    wavePropagation(s, c, dx, dy, dz, dt, nx, ny, nz, nt, xs, ys, zs);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     double execution_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
