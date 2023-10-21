@@ -4,14 +4,12 @@
 #include <vector>
 #include <chrono>
 #include <cmath>
-#define M_PI = 3.14159265358979323846;
+#define M_PI 3.14159265358979323846;
 
-//const double M_PI;
 const double PI_SQUARE = M_PI * M_PI;
 const double PI_SQUARE_FOUR = 4.0 * PI_SQUARE;
 const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
 const double PI_SQUARE_TWELVE = 12.0 * PI_SQUARE;
-
 
 void initializeSource(std::vector<float>& s, float f, float dt, int nt) {
 
@@ -60,8 +58,8 @@ void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz,
             int z = 2 + idx % (nz - 4);
 
             float dEx = calculateDEx(uAnterior, x, y, z, ny, nz, dx);
-            float dEy = calculateDEx(uAnterior, x, y, z, ny, nz, dy);
-            float dEz = calculateDEx(uAnterior, x, y, z, ny, nz, dz);
+            float dEy = calculateDEy(uAnterior, x, y, z, ny, nz, dy);
+            float dEz = calculateDEz(uAnterior, x, y, z, ny, nz, dz);
 
             uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
         }
@@ -74,9 +72,6 @@ void propagateWave(std::vector<float>& s, float c, float dx, float dy, float dz,
         uAnterior = temp;
     }
     
-    free(uAnterior);
-    free(uProximo);
-    free(u);
 }
 
 int main() {
