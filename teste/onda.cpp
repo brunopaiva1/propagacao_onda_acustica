@@ -23,7 +23,7 @@ void initializeSource(std::vector<float>& s, float f, float dt, int nt) {
 }
 
 float calculateDEx(const std::vector<float>& uAnterior, int x, int y, int z, int ny, int nz, float dx) {
-        dEx = ((-1.0/12.0)*uAnterior[(x - 2) * ny * nz + y * nz + z] +
+             return ((-1.0/12.0)*uAnterior[(x - 2) * ny * nz + y * nz + z] +
                     (4.0/3.0)*uAnterior[(x - 1) * ny * nz + y * nz + z] -
                     (5.0/2.0)*uAnterior[x * ny * nz + y * nz + z] +
                     (4.0/3.0)*uAnterior[(x + 1) * ny * nz + y * nz + z] -
