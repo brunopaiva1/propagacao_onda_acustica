@@ -13,11 +13,11 @@ const double PI_SQUARE_FIVE = 5.0 * PI_SQUARE;
 const double PI_SQUARE_TWELVE = 12.0 * PI_SQUARE;
 
 
-void initializeSource(std::vector<floa>& s, float f, float dt, int nt) {
+void initializeSource(std::vector<float>& s, float f, float dt, int nt) {
 
-    for (int i = 0; i < nt; i++){
-        t = i * dt;
-        s[i] = (1 - 2 * pi * pi * f * f * t * t) * exp(-pi * pi * f * f * t * t);
+    for (int i = 0; i < nt; i++) {
+        float t = i * dt;
+        s[i] = (1 - PI_SQUARE * f * f * t * t) * exp(-PI_SQUARE * f * f * t * t);
     }
     
 }
@@ -86,6 +86,8 @@ int main() {
     int nt = 10000;
     float f = 10;
     float c = 1500.0;
+
+     std::vector<float> s(nt);
 
     float *s = (float *)malloc(nt * sizeof(float));
 
